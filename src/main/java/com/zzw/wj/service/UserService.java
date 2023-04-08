@@ -38,4 +38,6 @@ public class UserService {
     public User getUser(LoginInfo loginInfo) {
         return userDAO.validateUser(loginInfo);
     }
+
+
 }

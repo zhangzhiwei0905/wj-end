@@ -34,15 +34,33 @@ public class UserController {
             return new Result(60001, "用户名和密码不能为空");
         }
         if (userService.isExist(user.getUsername())) {
-            return new Result(60002, "账户名已存在");
+            return new Result(60001, "账户名已存在");
         }
         if (userService.isExist(user.getPhone())) {
-            return new Result(60003, "该邮箱已被注册");
+            return new Result(60001, "该邮箱已被注册");
         }
         if (userService.isExist(user.getPhone())) {
-            return new Result(60004, "该手机号已被注册");
+            return new Result(60001, "该手机号已被注册");
         }
         userService.add(user);
         return new Result(SUCCESS_CODE, "成功");
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "/changePass")
+    @ResponseBody
+    public Result changePass(String username,String oldPass,String newPass){
+        User user = userService.getByName(username);
+        if(user==null){
+            return new Result(60001,"该用户不存在");
+        }else{
+            if(!user.getPassword().equals(oldPass)){
+                return new Result(60001,"旧密码错误");
+            }else{
+                user.setPassword(newPass);
+                userService.add(user);
+                return new Result(200,"成功");
+            }
+        }
     }
 }
